@@ -1,31 +1,41 @@
 <p style="margin: 0;font-size: 16px;line-height: 20px">
   Er zijn <%= @inactive_users_with_credit.size + @inactive_users_without_credit.size %> gebruikers in het streepsysteem gedecteerd die meer dan een jaar geen transacties hebben gemaakt. <br /><br />
+</p>
 
-  <% if @inactive_users_without_credit.any? %>
-  De volgende gebruikers hadden geen openstaand saldo en zijn daarom automatisch uitgeschakeld.
+<% if @inactive_users_without_credit.any? %>
+  <p style="margin: 0;font-size: 16px;line-height: 18px">
+    De volgende gebruikers hadden geen openstaand saldo en zijn daarom automatisch uitgeschakeld.
     Het is voor deze gebruikers niet meer mogelijk om bestellingen te doen in het streepsysteem.<br />
 
-    <ol style="margin: 0;font-size: 16px;line-height: 18px">
+    <ol style="font-size: 16px;line-height: 18px">
       <% @inactive_users_without_credit.each do |user_name| %>
         <li><%= user_name %></li>
       <% end %>
     </ol>
-  <% end %>
+  </p>
+<% end %>
 
-  <% if @inactive_users_with_credit.any? %>
-    De volgende gebruikers hebben een openstaand saldo.
-    Indien dit saldo negatief is moet dit worden geint bij de desbetreffende gebruiker.
-    Is het bedrag tussen de 0 en 5 euro postief dan mag dit volgens het regelement worden gehouden en hoeft dit niet terug geboekt te worden.
-    Indien dit saldo meer dan 5 euro positief is dient dit terug geboekt te worden naar de gebruiker.<br/>
 
-    Zorg er voor dat deze bedragen op 0 komen te staan (na het toepassen van de hiervoor genoemde acties) en deactiveer deze gebruikers hierna.<br />
+<br/><br/>
 
-    <ol style="margin: 0;font-size: 16px;line-height: 18px">
+<% if @inactive_users_with_credit.any? %>
+  <p style="margin: 0;font-size: 16px;line-height: 18px">
+    De volgende gebruikers hebben een openstaand saldo. Het volgende moet gebeuren: <br />
+    <ul style="font-size: 16px;line-height: 18px">
+      <li>Saldo negatief? Contacteer de gebruiker en zorg dat dit geint wordt.</li>
+      <li>Saldo 0-5 euro positief? Dan is dit volgens het regelement voor de stichting.</li>
+      <li>Saldo meer dan 5 euro positief? Contacteer de gebruiker en stort dit terug.</li>
+    </ul>
+  </p>
+
+  <p style="margin: 0;font-size: 16px;line-height: 18px">
+    Zorg er voor dat deze bedragen op 0 komen te staan en deactiveer deze gebruikers hierna.<br />
+
+    <ol style="font-size: 16px;line-height: 18px">
       <% @inactive_users_with_credit.each do |user_name| %>
         <li><%= user_name %></li>
       <% end %>
     </ol>
-  <% end %>
-</p>
 
-<br />
+  </p>
+<% end %>
