@@ -19,11 +19,7 @@ class InactiveUserNotificationJob < ApplicationJob
 
   def inactive_users
     # Select all users without orders and credit_mutations for a year
-    @inactive_users ||= User.all.select do |u|
-      u.created_at < deactivation_period &&
-        (u.orders.empty? || u.orders.last.created_at <= deactivation_period) &&
-        (u.credit_mutations.empty? || u.credit_mutations.last.created_at <= deactivation_period)
-    end
+    @inactive_users ||= User.all.select { |u| inactive?(u) }
   end
 
   def inactive_users_without_credit
@@ -31,7 +27,13 @@ class InactiveUserNotificationJob < ApplicationJob
   end
 
   def inactive_users_with_credit
-    @inactive_user_with_credit ||= inactive_users.select { |u| !u.credit.zero? }
+    @inactive_user_with_credit ||= inactive_users.reject { |u| u.credit.zero? }
+  end
+
+  def inactive?(user)
+    user.created_at < deactivation_period &&
+      (user.orders.empty? || user.orders.last.created_at <= deactivation_period) &&
+      (user.credit_mutations.empty? || user.credit_mutations.last.created_at <= deactivation_period)
   end
 
   def deactivation_period

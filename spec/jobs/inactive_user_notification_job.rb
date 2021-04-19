@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe InactiveUserNotificationJob, type: :job do
   describe '#perform' do
     let(:user) { FactoryBot.create(:user, name: 'Buddy Normal') }
-    let(:old_active_user) { FactoryBot.create(:user, name: 'Buddy Old Active', created_at: 2.years.ago)}
+    let(:old_active_user) { FactoryBot.create(:user, name: 'Buddy Old Active', created_at: 2.years.ago) }
     let(:negative_user) { FactoryBot.create(:user, name: 'Bro Negative', created_at: 2.years.ago) }
     let(:zero_user) { FactoryBot.create(:user, name: 'Bro Zero', created_at: 2.years.ago) }
     let(:treasurer) do
@@ -35,7 +35,7 @@ RSpec.describe InactiveUserNotificationJob, type: :job do
     it { expect(emails.first.body.to_s).not_to include user.name }
     it { expect(emails.first.body.to_s).not_to include old_active_user.name }
 
-    it { expect(zero_user.deactivated).to eq true}
-    it { expect(negative_user.deactivated).to eq false}
+    it { expect(zero_user.deactivated).to eq true }
+    it { expect(negative_user.deactivated).to eq false }
   end
 end
